@@ -34,9 +34,9 @@
     var ctime = document.getElementById('time');
    
     var tArray = [], // time of data arrival
-        xTrack = [], // value of sensor 1 : temperature
-        yTrack = [], // value of sensor 2 : Luminosity
-        zTrack = [],
+        y1Track = [], // value of sensor 1 : temperature
+        y2Track = [], // value of sensor 2 : Luminosity
+        y3Track = [],
 
         numPts = 50, // number of data points in x-axis                
         dtda = [],  // 1 x 3 array : [date, data1, data2] from sensors
@@ -82,16 +82,16 @@
                 //nextPt();                                
                 tArray = tArray.concat(dtda[0]);  // time
                 tArray.splice(0,1);
-                xTrack = xTrack.concat(dtda[1])   // temp
-                xTrack.splice(0, 1)  // remove the oldest data
-                yTrack = yTrack.concat(dtda[2])   // lux
-                yTrack.splice(0, 1)
-                zTrack = zTrack.concat(dtda[3])  
-                zTrack.splice(0, 1)
+                y1Track = y1Track.concat(dtda[1])   // temp
+                y1Track.splice(0, 1)  // remove the oldest data
+                y2Track = y2Track.concat(dtda[2])   // lux
+                y2Track.splice(0, 1)
+                y3Track = y3Track.concat(dtda[3])  
+                y3Track.splice(0, 1)
 
                 var update = {
                     x: [tArray, tArray, tArray],
-                    y: [xTrack, yTrack, zTrack]
+                    y: [y1Track, y2Track, y3Track]
                 }
                 Plotly.update(streamPlot, update);
             }                    
@@ -102,9 +102,9 @@
         // starting point : first data (temp, lux)
         for ( i = 0; i < numPts; i++) {
             tArray.push(dtda[0]);  // date
-            xTrack.push(dtda[1]);  // sensor 1 (temp)
-            yTrack.push(dtda[2]);  // sensor 2 (lux)
-            zTrack.push(dtda[3]);
+            y1Track.push(dtda[1]);  // sensor 1 (temp)
+            y2Track.push(dtda[2]);  // sensor 2 (lux)
+            y3Track.push(dtda[3]);
         }
 
         Plotly.newPlot(streamPlot, data, layout);
@@ -113,7 +113,7 @@
     // data
     var data = [{
         x : tArray,
-        y : xTrack,
+        y : y1Track,
         name : 'temperature',
         mode: "markers+lines",  // "lines+markers"
         line: {
@@ -131,7 +131,7 @@
   },//습도 추가
   {
     x : tArray,
-    y : yTrack,
+    y : y2Track,
     name : 'humidity',
     xaxis: 'x2',
     yaxis : 'y2',
@@ -153,7 +153,7 @@
  
   {
     x : tArray,
-    y : zTrack,
+    y : y3Track,
     name : 'luminosity',
     xaxis: 'x3',
     yaxis : 'y3',
